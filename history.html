@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>History</h1>
+        <ul id="historyList"></ul>
+        <button onclick="clearHistory()">Clear History</button>
+        <a href="index.html"><button>Go Back</button></a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            displayHistory();
+        });
+
+        function displayHistory() {
+            const historyList = document.getElementById('historyList');
+            const links = JSON.parse(localStorage.getItem('links')) || [];
+            
+            historyList.innerHTML = ''; // Clear existing list
+
+            if (links.length === 0) {
+                historyList.innerHTML = '<li>No history found.</li>';
+            } else {
+                links.forEach((link) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
+                    historyList.appendChild(li);
+                });
+            }
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear the history?')) {
+                localStorage.removeItem('links');
+                displayHistory(); // Refresh the display after clearing
+                alert('History cleared.');
+            }
+        }
+    </script>
+</body>
+</html>

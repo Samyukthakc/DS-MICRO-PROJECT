@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Link</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Enter a Link</h1>
+        <input type="text" id="urlInput" placeholder="Enter new page URL">
+        <button onclick="saveLink()">Open</button>
+        <a href="history.html"><button>View History</button></a>
+        
+        <!-- Navigation Buttons -->
+        <button onclick="goBack()">Back</button>
+        <button onclick="goForward()">Forward</button>
+        <button id="currentPageButton" onclick="displayCurrentPage()">Current Page</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize the UI
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+        });
+
+        // Function to handle saving and displaying a link
+        function saveLink() {
+            const urlInput = document.getElementById('urlInput').value.trim();
+            if (urlInput) {
+                visitNewPage(urlInput);
+
+                // Save the new URL to history
+                let links = JSON.parse(localStorage.getItem('links')) || [];
+                links.unshift(urlInput); // Add to the beginning of the array
+                localStorage.setItem('links', JSON.stringify(links));
+
+                document.getElementById('urlInput').value = ''; // Clear input after saving
+                updateUI();
+                alert('Link is opened');
+            } else {
+                alert('Please enter a valid URL.');
+            }
+        }
+
+        // Function to update the UI
+        function updateUI() {
+            const currentPageButton = document.getElementById('currentPageButton');
+            currentPageButton.innerText = `Current Page: ${currentPage || 'None'}`;
+        }
+
+        function displayCurrentPage() {
+            if (currentPage) {
+                alert(`Current page: ${currentPage}`);
+            } else {
+                alert('No current page.');
+            }
+        }
+    </script>
+</body>
+</html>
